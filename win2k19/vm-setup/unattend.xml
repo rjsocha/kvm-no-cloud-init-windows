@@ -8,28 +8,20 @@
                 <HideOEMRegistrationScreen>true</HideOEMRegistrationScreen>
                 <HideOnlineAccountScreens>true</HideOnlineAccountScreens>
                 <HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
-                <NetworkLocation>Home</NetworkLocation>
-                <ProtectYourPC>3</ProtectYourPC>
+                <NetworkLocation>Work</NetworkLocation>
+                <ProtectYourPC>1</ProtectYourPC>
                 <UnattendEnableRetailDemo>false</UnattendEnableRetailDemo>
             </OOBE>
 	    <TimeZone>Central European Standard Time</TimeZone>
             <UserAccounts>
-                <LocalAccounts>
-                    <LocalAccount wcm:action="add">
-                        <Password>
-                            <Value>cc</Value>
-                            <PlainText>true</PlainText>
-                        </Password>
-                        <Description></Description>
-                        <DisplayName>System Administrator</DisplayName>
-                        <Group>Administrators</Group>
-                        <Name>root</Name>
-                    </LocalAccount>
-                </LocalAccounts>
+		<AdministratorPassword>
+			<Value>cc</Value>
+			<PlainText>true</PlainText>
+		</AdministratorPassword>
             </UserAccounts>
         </component>
         <component name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <InputLocale>0415:00000415</InputLocale>
+	    <InputLocale>0415:00000415</InputLocale>
             <SystemLocale>pl-PL</SystemLocale>
             <UILanguage>pl-PL</UILanguage>
             <UILanguageFallback>en-US</UILanguageFallback>

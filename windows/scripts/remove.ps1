@@ -18,7 +18,69 @@ $appsToRemove = @(
     "*3DViewer*"
     "*GetStarted*"
     "*GetHelp*"
+    "*Microsoft.MixedReality.Portal*"
+    "*Microsoft.MicrosoftSolitaireCollection*"
+    "*Microsoft.WindowsFeedbackHub*"
+    "*Microsoft.ZuneMusic*"
+    "*Microsoft.YourPhone*"
+    "*Microsoft.WindowsSoundRecorder*"
+    "*Microsoft.ScreenSketch*"
+    "*Microsoft.MicrosoftStickyNotes*"
+    "*Microsoft.WindowsCalculator*"
+    "*Microsoft.Windows.Photos*"
+    "*Microsoft.MSPaint*"
+    "*Microsoft.549981C3F5F10*"
+    "*Microsoft.XboxApp*"
+    "*Microsoft.People*"
+    "*Microsoft.Office.OneNote*"
+    "*Microsoft.MixedReality.Portal*"
+    "*Microsoft.MicrosoftOfficeHub*"
 )
 foreach ($app in $appsToRemove) {
     Get-AppxProvisionedPackage -Online | where {$_.PackageName -like $app} | Remove-AppxProvisionedPackage -Online -ErrorAction SilentlyContinue
+    Get-AppxPackage | where {$_.PackageName -like $app} | Remove-AppxPackage
 }
+
+$apps = @(
+"Microsoft.Wallet"
+"Microsoft.BingWeather"
+"Microsoft.GetHelp"
+"Microsoft.Getstarted"
+"Microsoft.ZuneMusic"
+"Microsoft.WindowsFeedbackHub"
+"Microsoft.MicrosoftSolitaireCollection"
+"Microsoft.MixedReality.Portal"
+"Microsoft.Office.OneNote"
+"Microsoft.WindowsAlarms"
+"Microsoft.WindowsCamera"
+"Microsoft.WindowsMaps"
+"Microsoft.Xbox.TCUI"
+"Microsoft.XboxGameOverlay"
+"Microsoft.XboxGamingOverlay"
+"Microsoft.XboxSpeechToTextOverlay"
+"Microsoft.XboxIdentityProvider"
+"Microsoft.ZuneVideo"
+"Microsoft.YourPhone"
+"Microsoft.WindowsSoundRecorder"
+"Microsoft.ScreenSketch"
+"Microsoft.MicrosoftStickyNotes"
+"Microsoft.WindowsCalculator"
+"Microsoft.Windows.Photos"
+"Microsoft.MSPaint"
+"Microsoft.549981C3F5F10"
+"Microsoft.XboxApp"
+"Microsoft.WindowsMaps"
+"Microsoft.People"
+"Microsoft.Office.OneNote"
+"Microsoft.MixedReality.Portal"
+"Microsoft.MicrosoftOfficeHub"
+"Microsoft.Microsoft3DViewer"
+"Microsoft.SkypeApp"
+"microsoft.windowscommunicationsapps"
+)
+
+foreach($app in $apps) {
+	Get-AppxPackage $app | Remove-AppxPackage
+}
+
+(Get-PSReadlineOption).HistorySavePath

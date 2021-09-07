@@ -20,13 +20,15 @@ foreach($e in $cnf) {
         $opts=$e.Split('!')
         foreach($entry in $opts) {
                 switch -Regex ($entry) {
-                        '^win-user:' {
-				Remove-LocalUser -Name root -ErrorAction SilentlyContinue | Out-Null
-				$_ui=$entry.substring('win-user:'.length)
-				$_user=$_ui.Split('@')
-				$_p = $_user[1] | ConvertTo-SecureString -AsPlainText -Force
-				New-LocalUser  -Name $_user[0] -Password $_p
-				Add-LocalGroupMember -Member $_user[0] -Group Administrators
+                        '^addwin:' {
+				# not well tested...
+				if($false) {
+					$_ui=$entry.substring('addwin:'.length)
+					$_user=$_ui.Split('@')
+					$_p = $_user[1] | ConvertTo-SecureString -AsPlainText -Force
+					New-LocalUser  -Name $_user[0] -Password $_p
+					Add-LocalGroupMember -Member $_user[0] -Group Administrators
+				}
 			}
                         '^name:' {
 				$_name=$entry.substring('name:'.length)
@@ -38,6 +40,8 @@ foreach($e in $cnf) {
         }
 }
 Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -Name ClearPageFileAtShutdown -Value 0
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ServerManager" -Name DoNotOpenServerManagerAtLogon -Value 1
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection" -Name AllowTelemetry -Value 1
 New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Network\NewNetworkWindowOff" -Force | Out-Null
 if ( $_name.Length -gt 0 ) {
 	echo "Rename computer to $_name"
@@ -46,6 +50,5 @@ if ( $_name.Length -gt 0 ) {
 		echo "Register name in DNS"
 		wget -UseBasicParsing http://$_dns_registry/$_name | Out-Null
 	}
-	# not recommended...
 	Restart-Computer -Force
 }
