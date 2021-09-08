@@ -48,7 +48,7 @@ if ( $_name.Length -gt 0 ) {
 		do {
 			$cnt++
 			try {
-				Invoke-WebRequest -UseBasicParsing http://$_dns_registry/$_name
+				Invoke-WebRequest -UseBasicParsing http://$_dns_registry/$_name | Out-Null
 				break
 			} catch {
 				echo "Retry DNS registration $cnt"
