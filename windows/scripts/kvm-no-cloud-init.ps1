@@ -39,6 +39,7 @@ foreach($e in $cnf) {
 }
 Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -Name ClearPageFileAtShutdown -Value 0
 New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Network\NewNetworkWindowOff" -Force | Out-Null
+reg.exe import enable-pagefile.reg
 if ( $_name.Length -gt 0 ) {
 	echo "Rename computer to $_name"
 	Rename-Computer -NewName $_name -Force
@@ -56,5 +57,6 @@ if ( $_name.Length -gt 0 ) {
 		} while ($cnt -lt 21)
 	}
 	# not recommended...
-	Restart-Computer -Force
+	# Restart-Computer -Force
+	shutdown.exe /f /t 60 /r
 }
