@@ -37,10 +37,18 @@ foreach($e in $cnf) {
                 }
         }
 }
+echo "Disable ClearPageFileAtShutdown"
 Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -Name ClearPageFileAtShutdown -Value 0
+echo "Enable DoNotOpenServerManagerAtLogon"
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ServerManager" -Name DoNotOpenServerManagerAtLogon -Value 1
+echo "Set DataCollection to BASIC"
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection" -Name AllowTelemetry -Value 1
+echo "Disable NewNetworkWindow"
 New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Network\NewNetworkWindowOff" -Force | Out-Null
+echo "Enable ICMP ECHO for IPv4/IPv6"
+netsh advfirewall firewall add rule name="ICMP Allow incoming V4 echo request" protocol="icmpv4:8,any" dir=in action=allow
+netsh advfirewall firewall add rule name="ICMP Allow incoming V6 echo request" protocol="icmpv6:8,any" dir=in action=allow
+echo "Enable Auto Page File"
 reg.exe import enable-pagefile.reg
 if ( $_name.Length -gt 0 ) {
 	echo "Rename computer to $_name"
@@ -59,7 +67,6 @@ if ( $_name.Length -gt 0 ) {
 			}
 		} while ($cnt -lt 21)
 	}
-	# not recommended...
-	# Restart-Computer -Force
-	shutdown.exe /f /t 45 /r
+	echo "System restart in 20s"
+	shutdown.exe /f /t 20 /r
 }
