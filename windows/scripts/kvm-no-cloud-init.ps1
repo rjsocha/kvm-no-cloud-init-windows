@@ -58,5 +58,5 @@ if ( $_name.Length -gt 0 ) {
 	}
 	# not recommended...
 	# Restart-Computer -Force
-	shutdown.exe /f /t 60 /r
+	shutdown.exe /f /t 45 /r
 }
