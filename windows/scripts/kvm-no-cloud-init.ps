@@ -44,7 +44,16 @@ if ( $_name.Length -gt 0 ) {
 	Rename-Computer -NewName $_name -Force
 	if ( $_dns_registry.Length -gt 0) {
 		echo "Register name in DNS"
-		wget -UseBasicParsing http://$_dns_registry/$_name | Out-Null
+		do {
+			$cnt++
+			try {
+				Invoke-WebRequest -UseBasicParsing http://$_dns_registry/$_name
+				break
+			} catch {
+				echo "Retry DNS registration $cnt"
+				Start-Sleep -Milliseconds 250
+			}
+		} while ($cnt -lt 21)
 	}
 	# not recommended...
 	Restart-Computer -Force
