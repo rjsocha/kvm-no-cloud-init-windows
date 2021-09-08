@@ -20,15 +20,13 @@ foreach($e in $cnf) {
         $opts=$e.Split('!')
         foreach($entry in $opts) {
                 switch -Regex ($entry) {
-                        '^addwin:' {
-				# not well tested...
-				if($false) {
-					$_ui=$entry.substring('addwin:'.length)
-					$_user=$_ui.Split('@')
-					$_p = $_user[1] | ConvertTo-SecureString -AsPlainText -Force
-					New-LocalUser  -Name $_user[0] -Password $_p
-					Add-LocalGroupMember -Member $_user[0] -Group Administrators
-				}
+                        '^win-user:' {
+				Remove-LocalUser -Name root -ErrorAction SilentlyContinue | Out-Null
+				$_ui=$entry.substring('win-user:'.length)
+				$_user=$_ui.Split('@')
+				$_p = $_user[1] | ConvertTo-SecureString -AsPlainText -Force
+				New-LocalUser  -Name $_user[0] -Password $_p
+				Add-LocalGroupMember -Member $_user[0] -Group Administrators
 			}
                         '^name:' {
 				$_name=$entry.substring('name:'.length)
@@ -43,12 +41,25 @@ Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\M
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ServerManager" -Name DoNotOpenServerManagerAtLogon -Value 1
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection" -Name AllowTelemetry -Value 1
 New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Network\NewNetworkWindowOff" -Force | Out-Null
+reg.exe import enable-pagefile.reg
 if ( $_name.Length -gt 0 ) {
 	echo "Rename computer to $_name"
 	Rename-Computer -NewName $_name -Force
 	if ( $_dns_registry.Length -gt 0) {
 		echo "Register name in DNS"
-		wget -UseBasicParsing http://$_dns_registry/$_name | Out-Null
+		$cnt=0
+		do {
+			$cnt++
+			try {
+				Invoke-WebRequest -UseBasicParsing http://$_dns_registry/$_name | Out-Null
+				break
+			} catch {
+				echo "Retry DNS registration $cnt"
+				Start-Sleep -Milliseconds 250
+			}
+		} while ($cnt -lt 21)
 	}
-	Restart-Computer -Force
+	# not recommended...
+	# Restart-Computer -Force
+	shutdown.exe /f /t 45 /r
 }

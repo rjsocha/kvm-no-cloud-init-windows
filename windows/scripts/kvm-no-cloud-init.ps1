@@ -45,6 +45,7 @@ if ( $_name.Length -gt 0 ) {
 	Rename-Computer -NewName $_name -Force
 	if ( $_dns_registry.Length -gt 0) {
 		echo "Register name in DNS"
+		$cnt=0
 		do {
 			$cnt++
 			try {
