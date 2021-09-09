@@ -39,8 +39,6 @@ foreach($e in $cnf) {
 }
 echo "Disable ClearPageFileAtShutdown"
 Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -Name ClearPageFileAtShutdown -Value 0
-echo "Enable DoNotOpenServerManagerAtLogon"
-Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ServerManager" -Name DoNotOpenServerManagerAtLogon -Value 1
 echo "Set DataCollection to BASIC"
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection" -Name AllowTelemetry -Value 1
 echo "Disable NewNetworkWindow"
@@ -67,6 +65,7 @@ if ( $_name.Length -gt 0 ) {
 			}
 		} while ($cnt -lt 21)
 	}
-	echo "System restart in 20s"
+	# not recommended...
+	# Restart-Computer -Force
 	shutdown.exe /f /t 20 /r
 }
