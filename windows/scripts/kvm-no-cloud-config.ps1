@@ -60,6 +60,11 @@ Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalizatio
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization" -Name LockScreenImage -Value "c:\windows\setup\scripts\bg\bg.jpg"
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization" -Name LockScreenOverlaysDisabled -Value 1
 
+if ( Test-Path "HKLM:\SOFTWARE\Microsoft\ServerManager" ) {
+	echo "Enable DoNotOpenServerManagerAtLogon"
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ServerManager" -Name DoNotOpenServerManagerAtLogon -Value 1
+}
+
 if ( $_name.Length -gt 0 ) {
 	if ( $_dns_registry.Length -gt 0) {
 		echo "Register name in DNS"
