@@ -1,3 +1,2 @@
 @echo off
-mkdir c:\windows\setup\scripts
-copy /y scripts\*.* c:\windows\setup\scripts\
+xcopy /y /e scripts c:\windows\setup\scripts\
