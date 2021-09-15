@@ -1,4 +1,4 @@
-$kvm_oem = "./smbios-oem-strings.exe"
+$kvm_oem = "/windows/setup/scripts/tool/smbios-oem-strings.exe"
 function _get_config {
         $count = & $kvm_oem "count"
         $cnf = @()
@@ -49,8 +49,6 @@ netsh advfirewall firewall add rule name="ICMP Allow incoming V6 echo request" p
 echo "Enable Auto Page File"
 reg.exe import enable-pagefile.reg
 if ( $_name.Length -gt 0 ) {
-	echo "Rename computer to $_name"
-	Rename-Computer -NewName $_name -Force
 	if ( $_dns_registry.Length -gt 0) {
 		echo "Register name in DNS"
 		$cnt=0
@@ -65,7 +63,4 @@ if ( $_name.Length -gt 0 ) {
 			}
 		} while ($cnt -lt 21)
 	}
-	# not recommended...
-	# Restart-Computer -Force
-	shutdown.exe /f /t 20 /r
 }
