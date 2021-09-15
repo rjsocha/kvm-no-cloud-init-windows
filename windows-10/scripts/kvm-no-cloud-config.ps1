@@ -48,9 +48,18 @@ netsh advfirewall firewall add rule name="ICMP Allow incoming V4 echo request" p
 netsh advfirewall firewall add rule name="ICMP Allow incoming V6 echo request" protocol="icmpv6:8,any" dir=in action=allow
 echo "Enable Auto Page File"
 reg.exe import enable-pagefile.reg
+
+#echo "HACK/Swipe screen background"
+#Get-ChildItem -Path "C:\ProgramData\Microsoft\Windows\SystemData\*.jpg" -File -Recurse -Force | ForEach-Object {
+#	copy  C:\Windows\setup\scripts\bg\bg.jpg $_.FullName
+#}
+
 echo "Disable swipe lock screen"
 New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization" -Force | Out-Null
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization" -Name NoLockScreen -Value 1
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization" -Name LockScreenImage -Value "c:\windows\setup\scripts\bg\bg.jpg"
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization" -Name LockScreenOverlaysDisabled -Value 1
+
 if ( $_name.Length -gt 0 ) {
 	if ( $_dns_registry.Length -gt 0) {
 		echo "Register name in DNS"
